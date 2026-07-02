@@ -13,6 +13,14 @@ import random
 from Craps import Craps
 
 
+def input_default(prompt, default, cast):
+    value=input(prompt)
+    if value.strip():
+        return cast(value) 
+    
+    return default
+
+
 def simulate(num_simulations, bet, seed=None):
     rng=random.Random(seed)
 
@@ -45,12 +53,10 @@ def simulate(num_simulations, bet, seed=None):
     }
 
 def _main():
-    parser = argparse.ArgumentParser(description="Run a game Craps simulation and report RTP, average numbers of rolls and observed win probability.")
-    parser.add_argument("--num_simulations", type=int, default=100_000)
-    parser.add_argument("--bet", type=float, default=10.0)
-    parser.add_argument("--seed", type=int, default=None)
-    args = parser.parse_args()
-    result=simulate(args.num_simulations,args.bet,args.seed)
+    num_simulations = input_default("Input numbers of Simulations: ", 100000, int)
+    bet = input_default("Input Bet: ", 10, float)
+    seed = input_default("Input seed: ", None, int)
+    result=simulate(num_simulations,bet,seed)
     print(f"RTP: {result['RTP']}")
     print(f"Number of simulations: {result['Number of simulations']}")
     print(f"Number of Wins: {result['Number of Wins']}")
@@ -58,6 +64,7 @@ def _main():
     print(f"Win amount: {result['Win amount']}")
     print(f"Average numbers of rolls: {result['Average numbers of rolls']}")
     print(f"Observed win probability: {result['Observed win probability']}")
+    
 
 if __name__ == "__main__":
     _main()
